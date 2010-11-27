@@ -7,11 +7,17 @@
 
 @implementation FakeOperatorPrefsListController
 
-- (void)default:(id)item {
+- (void)changeTo:(id)item {
 	
 }
 
+- (void)default:(id)item {
+	
+	[self changeTo:@"FakeOperator-DEFAULT"];
+}
+
 - (void)changeOperatorName:(id)item {
+	
 	UIAlertView *dialog = [[UIAlertView alloc] init];
 	[dialog setDelegate:self];
 	[dialog setTitle:@"Enter Operator Name"];
@@ -24,16 +30,23 @@
 	[dialog addSubview:opField];
 	[dialog show];
 	[dialog becomeFirstResponder];
-
 }
 
-- (void) alertView:(UIAlertView *)alert clickedButtonAtIndex:(NSInteger)buttonIndex{    
-        NSLog(@"%d", (int) buttonIndex);
-        if (buttonIndex == 1) { // Change pushed
-			NSLog(@"Op name: %@", [opField text]);
-			// Need to figure out a good way to communicate with our dylib (NSNotificationCenter?)
-        } else {
-		}
+- (void) alertView:(UIAlertView *)alert clickedButtonAtIndex:(NSInteger)buttonIndex { 
+	
+	NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fakeoperator.plist";
+    NSLog(@"%d", (int) buttonIndex);
+
+    if (buttonIndex == 1) { 
+		// Change pushed
+		NSLog(@"Op name: %@", [opField text]);
+		// Need to figure out a good way to communicate with our dylib (NSNotificationCenter?)
+		//id controller = [NSClassFromString(@"SBTelephonyManager") sharedTelephonyManager];	
+		//[controller setOperatorName:[opField text]];
+			
+		//@"FakeOperator-DEFAULT"
+	} else {
+	}
 }
 
 - (id)specifiers {
