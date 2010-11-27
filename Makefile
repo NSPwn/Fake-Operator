@@ -6,3 +6,7 @@ TWEAK_NAME = FakeOperator
 FakeOperator_FILES = Tweak.xm
 
 include $(THEOS_MAKE_PATH)/tweak.mk
+
+
+after-FakeOperator-package::
+	$(FAKEROOT) cp -R layout/* _/
