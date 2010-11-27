@@ -9,6 +9,7 @@ FakeOperatorPrefs_FRAMEWORKS = UIKit
 FakeOperatorPrefs_PRIVATE_FRAMEWORKS = Preferences
 
 include theos/makefiles/bundle.mk
+include theos/makefiles/tweak.mk
 
 internal-stage::
 	$(ECHO_NOTHING)mkdir -p $(THEOS_STAGING_DIR)/Library/PreferenceLoader/Preferences$(ECHO_END)

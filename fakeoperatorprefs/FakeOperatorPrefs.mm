@@ -1,4 +1,5 @@
 #import <Preferences/Preferences.h>
+#import <SpringBoard/SpringBoard.h>
 
 @interface FakeOperatorPrefsListController: PSListController {
 	UITextField * opField;
@@ -9,8 +10,18 @@
 
 - (void)changeTo:(id)item {
 	
-	id controller = [NSClassFromString(@"SBTelephonyManager") sharedTelephonyManager];	
-	[controller setOperatorName:item];
+	NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fakeoperator.plist";
+	NSMutableDictionary *out = [[NSMutableDictionary alloc] initWithContentsOfFile:settingsFile];
+	[out setValue:item forKey:@"FakeOperator"];
+	[out writeToFile:settingsFile atomically: YES];
+	[out release];
+	
+	CPDistributedMessagingCenter *messagingCenter;
+ 	// Center name must be unique, recommend using application identifier.
+	messagingCenter = [NSClassFromString(@"CPDistributedMessagingCenter") centerNamed:@"com.nspwn.fakeoperator"];
+	
+	[messagingCenter sendMessageName:@"operatorChanged" userInfo:nil];
+	
 }
 
 - (void)default:(id)item {
@@ -31,7 +42,7 @@
 	[opField setPlaceholder:@"Operator name"];
 	[dialog addSubview:opField];
 	[dialog show];
-	[dialog becomeFirstResponder];
+	[opField becomeFirstResponder];
 }
 
 - (void) alertView:(UIAlertView *)alert clickedButtonAtIndex:(NSInteger)buttonIndex { 
@@ -40,13 +51,7 @@
     NSLog(@"%d", (int) buttonIndex);
 
     if (buttonIndex == 1) { 
-		// Change pushed
-		NSLog(@"Op name: %@", [opField text]);
-		// Need to figure out a good way to communicate with our dylib (NSNotificationCenter?)
-		//id controller = [NSClassFromString(@"SBTelephonyManager") sharedTelephonyManager];	
-		//[controller setOperatorName:[opField text]];
-			
-		//@"FakeOperator-DEFAULT"
+		[self changeTo:[opField text]];
 	} else {
 	}
 }
