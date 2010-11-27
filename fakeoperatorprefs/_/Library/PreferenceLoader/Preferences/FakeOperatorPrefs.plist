@@ -1,0 +1,10 @@
+{
+    entry = {
+	bundle = FakeOperatorPrefs;
+	cell = PSLinkCell;
+	detail = FakeOperatorPrefsListController;
+	icon = FakeOperatorPrefs.png;
+	isController = 1;
+	label = FakeOperatorPrefs;
+    };
+}
