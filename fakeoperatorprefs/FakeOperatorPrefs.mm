@@ -9,6 +9,8 @@
 
 - (void)changeTo:(id)item {
 	
+	id controller = [NSClassFromString(@"SBTelephonyManager") sharedTelephonyManager];	
+	[controller setOperatorName:item];
 }
 
 - (void)default:(id)item {
