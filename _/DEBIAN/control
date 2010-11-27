@@ -1,0 +1,10 @@
+Package: com.nspwn.fakeoperator
+Name: Fake Operator
+Depends: mobilesubstrate
+Version: 0.0.1-3
+Architecture: iphoneos-arm
+Description: An awesome MobileSubstrate tweak!
+Maintainer: GreySyntax
+Author: GreySyntax
+Section: Tweaks
+Installed-Size: 16
