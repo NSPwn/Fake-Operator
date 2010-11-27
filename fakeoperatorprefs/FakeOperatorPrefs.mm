@@ -31,8 +31,7 @@
         NSLog(@"%d", (int) buttonIndex);
         if (buttonIndex == 1) { // Change pushed
 			NSLog(@"Op name: %@", [opField text]);
-			id controller = [NSClassFromString(@"SBTelephonyManager") sharedTelephonyManager];
-			[controller setOperatorName:[opField text]];
+			// Need to figure out a good way to communicate with our dylib (NSNotificationCenter?)
         } else {
 		}
 }
