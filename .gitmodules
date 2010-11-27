@@ -1,3 +1,0 @@
-[submodule "fakeoperatorprefs/theos"]
-	path = fakeoperatorprefs/theos
-	url = git://github.com/DHowett/theos.git
