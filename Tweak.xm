@@ -9,7 +9,7 @@
 - (void)setOperatorName:(id)arg1 {
 	
 	NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fakeoperator.plist";
-	NSString *replacement = [NSString stringWithString:arg1];
+	NSString *replacement;
 	
 	if ([[NSFileManager defaultManager] fileExistsAtPath:settingsFile]) {
 	
@@ -17,7 +17,6 @@
 		
 		if ([fakeCarrier objectForKey:@"Enabled"]) {
 			
-			[replacement release];
 			replacement = [[fakeCarrier objectForKey:@"FakeOperator"] retain];
 			
 			NSLog(@"com.nspwn.fakeoperator is enabled, overriding carrier %@ with %@.", arg1, replacement);
@@ -29,13 +28,10 @@
 			[out release];
 			
 			%orig(replacement);
-			return;
 		} else if (arg1 == @"FakeOperator-DEFAULT") {
 		
 			//Settings.app is asking us to reset the value to the Default Operator!
-			[replacement release];
 			replacement = [[fakeCarrier objectForKey:@"DefaultOperator"] retain];
-			return;
 		}
 		
 		[fakeCarrier release];
@@ -43,7 +39,13 @@
 	
 	[settingsFile release];
 	
-	%orig(replacement);
+	if (!replacement || [arg1 isEqualToString:replacement]) {
+	
+		%orig(arg1)
+	} else {
+	
+		%orig(replacement);
+	}
 }
 
 %end
