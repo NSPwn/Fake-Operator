@@ -1,5 +1,5 @@
 /***
- * FakeOperator
+ * Fake Operator
  * Thanks to DarkMalloc
  * NSPwn (c) 2010
  **/
@@ -41,7 +41,7 @@
 	
 	if (!replacement || [arg1 isEqualToString:replacement]) {
 	
-		%orig(arg1)
+		%orig(arg1);
 	} else {
 	
 		%orig(replacement);
