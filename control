@@ -3,7 +3,7 @@ Name: Fake Operator
 Depends: mobilesubstrate
 Version: 0.0.1
 Architecture: iphoneos-arm
-Description: An awesome MobileSubstrate tweak!
+Description: Spoof your Operator on iOS 4.2 without having to edit PList's and without having to respring!
 Maintainer: GreySyntax
 Author: GreySyntax
 Section: Tweaks
