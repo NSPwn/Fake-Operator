@@ -7,3 +7,8 @@ TWEAK_NAME = FakeOperator
 FakeOperator_FILES = Tweak.xm
 
 include theos/makefiles/tweak.mk
+
+copy:: stage
+	make -C ../fakeoperatorprefs clean; make -C ../fakeoperatorprefs; make -C ../fakeoperatorprefs install;
+	rm -rf layout/Library
+	cp -R ../fakeoperatorprefs/_/* layout
