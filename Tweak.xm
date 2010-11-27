@@ -32,6 +32,11 @@
 		
 			//Settings.app is asking us to reset the value to the Default Operator!
 			replacement = [[fakeCarrier objectForKey:@"DefaultOperator"] retain];
+			
+			NSMutableDictionary *out = [[NSMutableDictionary alloc] initWithContentsOfFile:settingsFile];
+			[out setValue:NO forKey:@"Enabled"];
+			[out writeToFile:settingsFile atomically: YES];
+			[out release];
 		}
 		
 		[fakeCarrier release];
