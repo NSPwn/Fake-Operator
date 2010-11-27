@@ -1,4 +1,4 @@
-SYSROOT = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk
+SDKVERSION = 4.2
 GO_EASY_ON_ME=1
 include theos/makefiles/common.mk
 
@@ -8,7 +8,7 @@ FakeOperatorPrefs_INSTALL_PATH = /Library/PreferenceBundles
 FakeOperatorPrefs_FRAMEWORKS = UIKit
 FakeOperatorPrefs_PRIVATE_FRAMEWORKS = Preferences
 
-include $(THEOS_MAKE_PATH)/bundle.mk
+include theos/makefiles/bundle.mk
 
 internal-stage::
 	$(ECHO_NOTHING)mkdir -p $(THEOS_STAGING_DIR)/Library/PreferenceLoader/Preferences$(ECHO_END)

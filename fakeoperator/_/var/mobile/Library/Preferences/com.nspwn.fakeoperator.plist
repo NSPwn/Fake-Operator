@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>Enabled</key>
-	<false/>
+	<true/>
 	<key>FakeOperator</key>
 	<string>NSPwn</string>
 </dict>
