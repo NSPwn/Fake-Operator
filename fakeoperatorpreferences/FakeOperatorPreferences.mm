@@ -1,4 +1,7 @@
 #import <Preferences/Preferences.h>
+#import <CoreFoundation/CoreFoundation.h>
+
+extern void OperatorChanged(void *observer, CFStringRef fakeOperator, CFStringRef defaultOperator);
 
 @interface FakeOperatorPreferencesListController: PSListController {
 }
