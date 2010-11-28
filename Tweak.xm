@@ -53,3 +53,15 @@
 }
 
 %end
+
+static void operatorChangedNotification(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
+	//CDUpdatePrefs();
+	NSLog(@"Operator Changed Notification Received");
+}
+
+static _Constructor void FakeOperatorInitialize() {
+
+	%init;
+	CFNotificationCenterRef r = CFNotificationCenterGetDarwinNotifyCenter();
+	CFNotificationCenterAddObserver(r, NULL, &reloadPrefsNotification, CFSTR("com.nspwn.fakeoperator/operatorChanged"), NULL, 0);
+}
