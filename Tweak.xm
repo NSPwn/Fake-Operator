@@ -44,7 +44,7 @@ static NSDictionary *carrier;
 	
 		carrier = [NSDictionary dictionaryWithContentsOfFile:settingsFile];
 		
-		if ([carrier objectForKey:@"Enabled"] || [arg1 isEqualToString:@"FakeOperator-DEFAULT"]) {
+		if ([[carrier objectForKey:@"Enabled"] boolValue] || [arg1 isEqualToString:@"FakeOperator-DEFAULT"]) {
 		
 			if ([arg1 isEqualToString:@"FakeOperator-DEFAULT"]) {
 				
@@ -52,7 +52,7 @@ static NSDictionary *carrier;
 				//Settings.app is resetting the value!
 				replacement = [carrier objectForKey:@"DefaultOperator"];
 				NSMutableDictionary *out = [[NSMutableDictionary alloc] initWithContentsOfFile:settingsFile];
-				[out setValue:NO forKey:@"Enabled"];
+				[out setValue:[0 integerValue] forKey:@"Enabled"];
 				[out writeToFile:settingsFile atomically: YES];
 				[out release];
 			} else {

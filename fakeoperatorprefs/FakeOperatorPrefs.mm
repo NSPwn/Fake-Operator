@@ -13,7 +13,7 @@
 	NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fakeoperator.plist";
 	NSMutableDictionary *out = [[NSMutableDictionary alloc] initWithContentsOfFile:settingsFile];
 	[out setValue:item forKey:@"FakeOperator"];
-	[out setValue:YES forKey:@"Enabled"];
+	[out setValue:[1 integerValue] forKey:@"Enabled"];
 	[out writeToFile:settingsFile atomically: YES];
 	[out release];
 	
