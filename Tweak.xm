@@ -3,6 +3,7 @@
  * Thanks to DarkMalloc
  * NSPwn (c) 2010
  **/
+
 static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fakeoperatorpreferences.plist";
 
 %hook SBTelephonyManager
