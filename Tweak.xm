@@ -3,12 +3,39 @@
  * Thanks to DarkMalloc
  * NSPwn (c) 2010
  **/
+#import "AppSupport/CPDistributedMessagingCenter.h"
+
+@class CPDistributedMessagingCenter;
+
+static CPDistributedMessagingCenter *MainMessagingCenter;
+static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fakeoperatorpreferences.plist";
 
 %hook SBTelephonyManager
+- (id)init {
+
+	// Center name must be unique, recommend using application identifier.
+	MainMessagingCenter = [NSClassFromString(@"CPDistributedMessagingCenter") centerNamed:@"com.nspwn.fakeoperator"];
+	[MainMessagingCenter runServerOnCurrentThread];
+
+	// Register Messages
+	[MainMessagingCenter registerForMessageName:@"operatorChanged" target:self selector:@selector(operatorChanged)];
+
+	%orig;
+
+}
+
+%new
+- (void)operatorChanged {
+	NSDictionary *carrier = [NSDictionary dictionaryWithContentsOfFile:settingsFile];
+	NSString *carrierString = [carrier objectForKey:@"FakeOperator"];
+	id controller = [NSClassFromString(@"SBTelephonyManager") sharedTelephonyManager];
+	[controller setOperatorName:[carrier objectForKey:@"FakeOperator"]];
+	
+	[carrier release];
+}
 
 - (void)setOperatorName:(id)arg1 {
 
-	NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fakeoperatorpreferences.plist";
 	NSString *replacement = [[NSString alloc] initWithString:arg1];
 	
 	if ([[NSFileManager defaultManager] fileExistsAtPath:settingsFile]) {
@@ -53,15 +80,3 @@
 }
 
 %end
-
-static void operatorChangedNotification(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
-	//CDUpdatePrefs();
-	NSLog(@"Operator Changed Notification Received");
-}
-
-static _Constructor void FakeOperatorInitialize() {
-
-	%init;
-	CFNotificationCenterRef r = CFNotificationCenterGetDarwinNotifyCenter();
-	CFNotificationCenterAddObserver(r, NULL, &reloadPrefsNotification, CFSTR("com.nspwn.fakeoperator/operatorChanged"), NULL, 0);
-}

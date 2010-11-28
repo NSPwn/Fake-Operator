@@ -1,8 +1,4 @@
 #import <Preferences/Preferences.h>
-#import <Preferences/PSSpecifier.h>
-#import <Preferences/PSListController.h>
-
-static CFNotificationCenterRef darwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
 @interface FakeOperatorPreferencesListController: PSListController {
 }
@@ -13,10 +9,13 @@ static CFNotificationCenterRef darwinNotifyCenter = CFNotificationCenterGetDarwi
 @implementation FakeOperatorPreferencesListController
 
 - (void)setPreferenceValue:(id)value specifier:(id)specifier {
+	
 	[super setPreferenceValue:value specifier:specifier];
 	// Post a notification.
-	NSString *notification = [specifier propertyForKey:@"postNotification"];
-	CFNotificationCenterPostNotification(darwinNotifyCenter, (CFStringRef)notification, NULL, NULL, true);
+	CPDistributedMessagingCenter *messagingCenter;
+	messagingCenter = [NSClassFromString(@"CPDistributedMessagingCenter") centerNamed:@"com.nspwn.fakeoperator"];
+	[messagingCenter sendMessageName:@"operatorChanged" userInfo:nil];
+	[messagingCenter release];
 }
 
 - (id)specifiers {
