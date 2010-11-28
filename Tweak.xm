@@ -7,33 +7,24 @@
 
 @class CPDistributedMessagingCenter;
 
-static CPDistributedMessagingCenter *MainMessagingCenter;
 static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fakeoperatorpreferences.plist";
 
-%hook SBTelephonyManager
+%class SBTelephonyManager
 
-- (id)init {
-
-	//Must be unique
-	MainMessagingCenter = [NSClassFromString(@"CPDistributedMessagingCenter") centerNamed:@"com.nspwn.fakeoperator"];
-	[MainMessagingCenter runServerOnCurrentThread];
-	
-	//Register messages
-	[MainMessagingCenter registerForMessageName:@"operatorChanged" target:self selector:@selector(operatorChanged)];
-	
-	%orig;
-}
-
-%new
-- (void)operatorChanged {
-
+static void reloadPrefsNotification(CFNotificationCenterRef center,
+					void *observer,
+					CFStringRef name,
+					const void *object,
+					CFDictionaryRef userInfo) {
 	NSLog(@"com.nspwn.fakeoperator Operator changed");
 	NSDictionary *carrier = [[NSDictionary dictionaryWithContentsOfFile:settingsFile] retain];
-	
-	id controller = [NSClassFromString(@"SBTelephonyManager") sharedTelephonyManager];
+
+	id controller = [%c(SBTelephonyManager) sharedTelephonyManager];
 	[controller setOperatorName:[carrier objectForKey:@"DefaultCarrier"]];
 	[carrier release];
 }
+
+%hook SBTelephonyManager
 
 - (void)setOperatorName:(id)arg1 {
 
@@ -84,8 +75,15 @@ static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fake
 	
 	} else {
 	
-		%orig(arg1);
+		%orig;
 	}
 }
 
 %end
+
+%ctor {
+	%init;
+	CFNotificationCenterRef r = CFNotificationCenterGetDarwinNotifyCenter();
+	CFNotificationCenterAddObserver(r, NULL, &reloadPrefsNotification,
+		CFSTR("com.nspwn.fakeoperator/operatorChanged"), NULL, 0);
+}
