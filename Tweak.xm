@@ -37,35 +37,37 @@ static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fake
 
 - (void)setOperatorName:(id)arg1 {
 
-	NSString *replacement = [[NSString alloc] initWithString:arg1];
+	if (arg1 != nil) {
 	
-	if ([[NSFileManager defaultManager] fileExistsAtPath:settingsFile]) {
-	
-		NSDictionary *carrier = [[NSDictionary dictionaryWithContentsOfFile:settingsFile] retain];
-		NSLog(@"Carrier: %@", carrier);
+		NSString *replacement = [[NSString alloc] initWithString:arg1];
 		
-		if ([[carrier objectForKey:@"Enabled"] boolValue]) {
+		if ([[NSFileManager defaultManager] fileExistsAtPath:settingsFile]) {
+		
+			NSDictionary *carrier = [[NSDictionary dictionaryWithContentsOfFile:settingsFile] retain];
+			NSLog(@"Carrier: %@", carrier);
 			
-			NSLog(@"com.nspwn.fakeoperator is enabled");
-			NSMutableDictionary *plist = [[NSMutableDictionary alloc] initWithContentsOfFile:settingsFile];
-			
-			if ([[carrier objectForKey:@"FakeCarrier"] isEqualToString:@""]) {
+			if ([[carrier objectForKey:@"Enabled"] boolValue]) {
 				
-				//Resetting Carrier / Disable
-				[replacement release];
-				replacement = [carrier objectForKey:@"DefaultCarrier"];
-				[plist setObject:[NSNumber numberWithBool:NO] forKey:@"Enabled"];
-			} else {
+				NSLog(@"com.nspwn.fakeoperator is enabled");
+				NSMutableDictionary *plist = [[NSMutableDictionary alloc] initWithContentsOfFile:settingsFile];
+				
+				if ([[carrier objectForKey:@"FakeCarrier"] isEqualToString:@""]) {
+				
+					//Resetting Carrier / Disable
+					[replacement release];
+					replacement = [carrier objectForKey:@"DefaultCarrier"];
+					[plist setObject:[NSNumber numberWithBool:NO] forKey:@"Enabled"];
+				} else {
 			
-				//Enable & Set DefaultCarrier (Backup)
-				[plist setObject:[NSNumber numberWithBool:YES] forKey:@"Enabled"];
-				[plist setObject:arg1 forKey:@"DefaultCarrier"];
-				[replacement release];
-				replacement = [carrier objectForKey:@"FakeCarrier"];
-			}
-			
-			[plist writeToFile:settingsFile atomically:YES];
-			[plist release];
+					//Enable & Set DefaultCarrier (Backup)
+					[plist setObject:[NSNumber numberWithBool:YES] forKey:@"Enabled"];
+					[plist setObject:arg1 forKey:@"DefaultCarrier"];
+					[replacement release];
+					replacement = [carrier objectForKey:@"FakeCarrier"];
+				}
+				
+				[plist writeToFile:settingsFile atomically:YES];
+				[plist release];
 		} else {
 			
 			NSLog(@"com.nspwn.fakeoperator is disabled");
@@ -78,6 +80,10 @@ static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fake
 	NSLog(@"com.nspwn.fakeoperator: %@", replacement);
 
 	%orig(replacement);
+	
+	} else {
+		%orig(arg1);
+	}
 }
 
 %end
