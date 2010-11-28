@@ -26,7 +26,7 @@
 			<key>cell</key>
 			<string>PSEditTextCell</string>
 			<key>default</key>
-			<true/>
+			<string>FakeCarrier</string>
 			<key>defaults</key>
 			<string>com.nspwn.fakeoperatorpreferences</string>
 			<key>key</key>

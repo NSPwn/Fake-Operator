@@ -21,7 +21,7 @@ static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fake
 	//Register messages
 	[MainMessagingCenter registerForMessageName:@"operatorChanged" target:self selector:@selector(operatorChanged)];
 	
-	%orig;
+	return %orig;
 }
 
 %new
