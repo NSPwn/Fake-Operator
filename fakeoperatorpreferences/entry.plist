@@ -1,13 +1,13 @@
 {
-    entry = {
-	bundle = FakeOperatorPreferences;
-	cell = PSLinkCell;
-	detail = FakeOperatorPreferencesListController;
-	defaults=com.nspwn.fakeoperator;
-	key=Enabled;
-	postNotification = "com.nspwn.fakeoperator/operatorChanged";
-	icon = FakeOperatorPreferences.png;
-	isController = 1;
-	label = FakeOperator;
-    };
+	entry = {
+		bundle = "FakeOperatorPreferences";
+		cell = PSLinkCell;
+		detail = "FakeOperatorPreferencesListController";
+		defaults = "com.nspwn.fakeoperator";
+		key = Enabled;
+		postNotification = "com.nspwn.fakeoperator/operatorChanged";
+		icon = "FOSettingsIcon.png";
+		isController = 1;
+		label = FakeOperator;
+	};
 }

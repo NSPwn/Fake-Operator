@@ -6,7 +6,7 @@ FakeOperatorPreferences_INSTALL_PATH = /Library/PreferenceBundles
 FakeOperatorPreferences_FRAMEWORKS = UIKit
 FakeOperatorPreferences_PRIVATE_FRAMEWORKS = Preferences
 
-include $(THEOS_MAKE_PATH)/bundle.mk
+include theos/makefiles/bundle.mk
 
 internal-stage::
 	$(ECHO_NOTHING)mkdir -p $(THEOS_STAGING_DIR)/Library/PreferenceLoader/Preferences$(ECHO_END)

@@ -38,7 +38,7 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>Copyright (c) GreySytnax 2010</string>
+			<string>Copyright (c) GreySytnax and DarkMalloc 2010</string>
 		</dict>
 	</array>
 	<key>title</key>
