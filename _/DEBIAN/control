@@ -1,7 +1,7 @@
 Package: com.nspwn.fakeoperator
 Name: Fake Operator
-Depends: mobilesubstrate
-Version: 0.0.1-70
+Depends: mobilesubstrate, firmware (>= 3.0)
+Version: 1.0.0-1
 Architecture: iphoneos-arm
 Description: Spoof your Operator on iOS 4.2 without having to edit PList's and without having to respring!
 Maintainer: GreySyntax
