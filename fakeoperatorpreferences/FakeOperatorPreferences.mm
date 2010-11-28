@@ -23,6 +23,7 @@
 
 - (id)specifiers {
 	if(_specifiers == nil) {
+		
 		_specifiers = [[self loadSpecifiersFromPlistName:@"FakeOperatorPreferences" target:self] retain];
 	}
 	return _specifiers;
