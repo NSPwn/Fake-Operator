@@ -11,11 +11,6 @@
 - (void)setPreferenceValue:(id)value specifier:(id)specifier {
 	
 	[super setPreferenceValue:value specifier:specifier];
-	// Post a notification.
-	CPDistributedMessagingCenter *messagingCenter;
-	messagingCenter = [NSClassFromString(@"CPDistributedMessagingCenter") centerNamed:@"com.nspwn.fakeoperator"];
-	[messagingCenter sendMessageName:@"operatorChanged" userInfo:nil];
-	[messagingCenter release];
 }
 
 - (id)specifiers {

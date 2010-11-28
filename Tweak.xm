@@ -3,36 +3,9 @@
  * Thanks to DarkMalloc
  * NSPwn (c) 2010
  **/
-#import "AppSupport/CPDistributedMessagingCenter.h"
-
-@class CPDistributedMessagingCenter;
-
-static CPDistributedMessagingCenter *MainMessagingCenter;
 static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fakeoperatorpreferences.plist";
 
 %hook SBTelephonyManager
-- (id)init {
-
-	// Center name must be unique, recommend using application identifier.
-	MainMessagingCenter = [NSClassFromString(@"CPDistributedMessagingCenter") centerNamed:@"com.nspwn.fakeoperator"];
-	[MainMessagingCenter runServerOnCurrentThread];
-
-	// Register Messages
-	[MainMessagingCenter registerForMessageName:@"operatorChanged" target:self selector:@selector(operatorChanged)];
-
-	%orig;
-
-}
-
-%new
-- (void)operatorChanged {
-	NSDictionary *carrier = [NSDictionary dictionaryWithContentsOfFile:settingsFile];
-	NSString *carrierString = [carrier objectForKey:@"FakeOperator"];
-	id controller = [NSClassFromString(@"SBTelephonyManager") sharedTelephonyManager];
-	[controller setOperatorName:[carrier objectForKey:@"FakeOperator"]];
-	
-	[carrier release];
-}
 
 - (void)setOperatorName:(id)arg1 {
 
