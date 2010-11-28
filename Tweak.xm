@@ -10,7 +10,6 @@
 static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fakeoperatorpreferences.plist";
 
 %class SBTelephonyManager
-
 static void reloadPrefsNotification(CFNotificationCenterRef center,
 					void *observer,
 					CFStringRef name,
