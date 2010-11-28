@@ -6,5 +6,7 @@
 	<false/>
 	<key>FakeOperator</key>
 	<string>NSPwn</string>
+	<key>Launched</key>
+	<integer>0</integer>
 </dict>
 </plist>

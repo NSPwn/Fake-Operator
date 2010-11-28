@@ -13,6 +13,7 @@
 	NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fakeoperator.plist";
 	NSMutableDictionary *out = [[NSMutableDictionary alloc] initWithContentsOfFile:settingsFile];
 	[out setValue:item forKey:@"FakeOperator"];
+	[out setValue:YES forKey:@"Enabled"];
 	[out writeToFile:settingsFile atomically: YES];
 	[out release];
 	
@@ -21,7 +22,6 @@
 	messagingCenter = [NSClassFromString(@"CPDistributedMessagingCenter") centerNamed:@"com.nspwn.fakeoperator"];
 	
 	[messagingCenter sendMessageName:@"operatorChanged" userInfo:nil];
-	
 }
 
 - (void)default:(id)item {

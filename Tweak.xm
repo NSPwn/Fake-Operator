@@ -44,11 +44,17 @@ static NSDictionary *carrier;
 	
 		carrier = [NSDictionary dictionaryWithContentsOfFile:settingsFile];
 		
-		if ([carrier objectForKey:@"Enabled"]) {
+		if ([carrier objectForKey:@"Enabled"] || [arg1 isEqualToString:@"FakeOperator-DEFAULT"]) {
 		
-			if (arg1 == @"FakeOperator-DEFAULT") {
+			if ([arg1 isEqualToString:@"FakeOperator-DEFAULT"]) {
+				
+				NSLog(@"com.nspwn.fakeoperator Reset triggered, disabling");
+				//Settings.app is resetting the value!
 				replacement = [carrier objectForKey:@"DefaultOperator"];
-				%orig(replacement);
+				NSMutableDictionary *out = [[NSMutableDictionary alloc] initWithContentsOfFile:settingsFile];
+				[out setValue:NO forKey:@"Enabled"];
+				[out writeToFile:settingsFile atomically: YES];
+				[out release];
 			} else {
 			
 				replacement = [carrier objectForKey:@"FakeOperator"];
@@ -61,20 +67,8 @@ static NSDictionary *carrier;
 				[out setObject:[NSNumber numberWithBool:YES] forKey:@"Launched"];
 				[out writeToFile:settingsFile atomically: YES];
 				[out release];
-			
-			%orig(replacement);
-			
 			}
 			
-		} else {
-		
-			//Settings.app is asking us to reset the value to the Default Operator!
-			replacement = [[carrier objectForKey:@"DefaultOperator"] retain];
-			
-			NSMutableDictionary *out = [[NSMutableDictionary alloc] initWithContentsOfFile:settingsFile];
-			[out setValue:NO forKey:@"Enabled"];
-			[out writeToFile:settingsFile atomically: YES];
-			[out release];
 		}
 	}
 	
