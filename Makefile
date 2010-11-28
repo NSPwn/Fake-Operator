@@ -2,7 +2,7 @@ SDKVERSION = 4.2
 GO_EASY_ON_ME=1
 include theos/makefiles/common.mk
 
-SUBPROJECTS = FakeOperatorPrefs
+SUBPROJECTS = FakeOperatorPreferences
 TWEAK_NAME = FakeOperator
 FakeOperator_FILES = Tweak.xm
 
