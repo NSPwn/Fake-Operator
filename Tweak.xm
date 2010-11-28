@@ -72,6 +72,7 @@ static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fake
 			
 			NSLog(@"com.nspwn.fakeoperator is disabled");
 		}
+		
 		[carrier release];
 	}
 	
@@ -82,6 +83,7 @@ static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fake
 	%orig(replacement);
 	
 	} else {
+	
 		%orig(arg1);
 	}
 }
