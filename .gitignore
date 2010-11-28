@@ -1,4 +1,6 @@
 .DS_Store
-/obj
+obj
 *.deb
-/_
+_
+.theos
+.debmake
