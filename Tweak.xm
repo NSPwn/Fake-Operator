@@ -58,19 +58,19 @@ static void reloadPrefsNotification(CFNotificationCenterRef center,
 				
 				[plist writeToFile:settingsFile atomically:YES];
 				[plist release];
-		} else {
+			} else {
+				
+				NSLog(@"com.nspwn.fakeoperator is disabled");
+			}
 			
-			NSLog(@"com.nspwn.fakeoperator is disabled");
+			[carrier release];
 		}
+	
+		[settingsFile release];
 		
-		[carrier release];
-	}
-	
-	[settingsFile release];
-	
-	NSLog(@"com.nspwn.fakeoperator: %@", replacement);
-
-	%orig(replacement);
+		NSLog(@"com.nspwn.fakeoperator: %@", replacement);
+		
+		%orig(replacement);
 	
 	} else {
 	
