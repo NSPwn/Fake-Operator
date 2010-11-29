@@ -1,11 +1,11 @@
-include theos/makefiles/common.mk
+include ../theos/makefiles/common.mk
 
 BUNDLE_NAME = FakeOperatorPreferences
 FakeOperatorPreferences_FILES = FakeOperatorPreferences.mm
 FakeOperatorPreferences_INSTALL_PATH = /Library/PreferenceBundles
 FakeOperatorPreferences_PRIVATE_FRAMEWORKS = Preferences
 
-include theos/makefiles/bundle.mk
+include ../theos/makefiles/bundle.mk
 
 internal-stage::
 	$(ECHO_NOTHING)mkdir -p $(THEOS_STAGING_DIR)/Library/PreferenceLoader/Preferences$(ECHO_END)
