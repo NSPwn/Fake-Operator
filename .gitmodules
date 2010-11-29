@@ -1,6 +1,3 @@
 [submodule "theos"]
 	path = theos
 	url = https://github.com/DHowett/theos.git
-[submodule "FakeOperatorPreferences/theos"]
-	path = FakeOperatorPreferences/theos
-	url = https://github.com/DHowett/theos.git
