@@ -68,7 +68,7 @@ static void reloadPrefsNotification(CFNotificationCenterRef center,
 					strncpy(data.serviceString, [[_FOcarrier objectForKey:@"FakeCarrier"] UTF8String], 100);
 					data.serviceString[99] = '\0';
 					
-				} else if (_FOfirmwareVersion == 4.1 || _FOfirmwareVersion = 4.0) {
+				} else if (_FOfirmwareVersion == 4.1 || _FOfirmwareVersion == 4.0) {
 					
 					_41data &data(MSHookIvar<_41data>(self , "_data"));
 					
@@ -90,7 +90,7 @@ static void reloadPrefsNotification(CFNotificationCenterRef center,
 						data.serviceString[99] = '\0';
 					}
 					
-				} else if (_FOfirmwareVersion = 4.1 || _FOfirmwareVersion = 4.0) {
+				} else if (_FOfirmwareVersion = 4.1 || _FOfirmwareVersion == 4.0) {
 					
 					_41data &data(MSHookIvar<_41data>(self , "_data"));
 					
