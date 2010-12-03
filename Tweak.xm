@@ -15,29 +15,21 @@ typedef struct {
 	int gsmSignalStrengthRaw;
 	int gsmSignalStrengthBars;
 	char serviceString[100];
-	char serviceImageBlack[100];
-	char serviceImageSilver[100];
-	char operatorDirectory[1024];
-	unsigned int serviceContentType;
-	int wifiSignalStrengthRaw;
-	int wifiSignalStrengthBars;
-	unsigned int dataNetworkType;
-	int batteryCapacity;
-	unsigned int batteryState;
-	char notChargingString[150];
-	int bluetoothBatteryCapacity;
-	int thermalColor;
-	unsigned int slowActivity:1;
-	char activityDisplayId[256];
-	unsigned int bluetoothConnected:1;
-	char recordingAppString[100];
-	unsigned int displayRawGSMSignal:1;
-	unsigned int displayRawWifiSignal:1;
-} _data;
+} _42data;
+
+typedef struct {
+	char itemIsEnabled[20];
+	char timeString[64];
+	int gsmSignalStrengthRaw;
+	int gsmSignalStrengthBars;
+	char serviceString[100];
+} _41data;
 
 @class CPDistributedMessagingCenter;
 
 static NSString *settingsFile = @"/var/mobile/Library/Preferences/com.nspwn.fakeoperatorpreferences.plist";
+float _FOfirmwareVersion = 0.0f;
+NSDictionary *_FOcarrier;
 
 %class SBStatusBarDataManager
 
@@ -47,48 +39,73 @@ static void reloadPrefsNotification(CFNotificationCenterRef center,
 					const void *object,
 					CFDictionaryRef userInfo) {
 	NSLog(@"com.nspwn.fakeoperator Operator changed");
-	NSDictionary *carrier = [[NSDictionary dictionaryWithContentsOfFile:settingsFile] retain];
+	_FOcarrier = [[NSDictionary dictionaryWithContentsOfFile:settingsFile] retain];
 	
 	id dataManager = [%c(SBStatusBarDataManager) sharedDataManager];
 	
 	[dataManager _updateServiceItem];
 	
 	[dataManager _dataChanged];
-	
-	[carrier release];
 }
+
 
 %hook SBStatusBarDataManager
 
 - (void)_updateServiceItem {
 	
-	if ([[NSFileManager defaultManager] fileExistsAtPath:settingsFile]) {
+	if (_FOcarrier != NULL) {
+			
+		NSLog(@"%@", _FOcarrier);
 		
-		NSDictionary *carrier = [[NSDictionary dictionaryWithContentsOfFile:settingsFile] retain];
+		NSLog(@"Firmware: %f", _FOfirmwareVersion);
 		
-		if ([[carrier objectForKey:@"Enabled"] boolValue] && [carrier objectForKey:@"FakeCarrier"] != nil) {
-			
-			_data &data(MSHookIvar<_data>(self , "_data"));
-			
-			strncpy(data.serviceString, [[carrier objectForKey:@"FakeCarrier"] UTF8String], 100);
-			data.serviceString[99] = '\0';
-			
-		} else {
-			
-			NSString *&serviceString(MSHookIvar<NSString *>(self , "_serviceString"));
-			
-			_data &data(MSHookIvar<_data>(self , "_data"));
-			
-			strncpy(data.serviceString, [serviceString UTF8String], 100);
-			data.serviceString[99] = '\0';
-			
-		}
-		
-		
-		[carrier release];
+			if ([[_FOcarrier objectForKey:@"Enabled"] boolValue] && [_FOcarrier objectForKey:@"FakeCarrier"] != nil) {
+				
+				if (_FOfirmwareVersion == 4.2) {
+					
+					_42data &data(MSHookIvar<_42data>(self , "_data"));
+					
+					strncpy(data.serviceString, [[_FOcarrier objectForKey:@"FakeCarrier"] UTF8String], 100);
+					data.serviceString[99] = '\0';
+					
+				} else if (_FOfirmwareVersion == 4.1 || _FOfirmwareVersion = 4.0) {
+					
+					_41data &data(MSHookIvar<_41data>(self , "_data"));
+					
+					strncpy(data.serviceString, [[_FOcarrier objectForKey:@"FakeCarrier"] UTF8String], 100);
+					data.serviceString[99] = '\0';
+					
+				}
+				
+			} else {
+				
+				if (_FOfirmwareVersion == 4.2) {
+					
+					_42data &data(MSHookIvar<_42data>(self , "_data"));
+					
+					NSString *&serviceString(MSHookIvar<NSString *>(self , "_serviceString"));
+					
+					if (serviceString != NULL) {
+						strncpy(data.serviceString, [serviceString UTF8String], 100);
+						data.serviceString[99] = '\0';
+					}
+					
+				} else if (_FOfirmwareVersion = 4.1 || _FOfirmwareVersion = 4.0) {
+					
+					_41data &data(MSHookIvar<_41data>(self , "_data"));
+					
+					NSString *&serviceString(MSHookIvar<NSString *>(self , "_serviceString"));
+					
+					if (serviceString != NULL) {
+						strncpy(data.serviceString, [serviceString UTF8String], 100);
+						data.serviceString[99] = '\0';
+					}
+					
+				}
+				
+			}
 		
 	}
-	
 	
 	%orig;
 }
@@ -96,6 +113,12 @@ static void reloadPrefsNotification(CFNotificationCenterRef center,
 %end
 
 %ctor {
+	if (kCFCoreFoundationVersionNumber == 550.52) { _FOfirmwareVersion = 4.2f; }
+	if (kCFCoreFoundationVersionNumber == 550.38) { _FOfirmwareVersion = 4.1f; }
+	if (kCFCoreFoundationVersionNumber == 550.32) { _FOfirmwareVersion = 4.0f; }
+	if ([[NSFileManager defaultManager] fileExistsAtPath:settingsFile]) { 
+		_FOcarrier = [NSDictionary dictionaryWithContentsOfFile:settingsFile];
+	}
 	%init;
 	CFNotificationCenterRef r = CFNotificationCenterGetDarwinNotifyCenter();
 	CFNotificationCenterAddObserver(r, NULL, &reloadPrefsNotification,
