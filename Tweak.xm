@@ -4,7 +4,6 @@
  * iPod-Compatiblility by Frigid
  * NSPwn (c) 2010
  **/
-#import "AppSupport/CPDistributedMessagingCenter.h"
 
 #include <stdio.h>
 #include <string.h>
